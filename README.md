@@ -74,7 +74,9 @@ Distributed under the MIT License. See LICENSE for more information.
 
 Contact
 Mahmood Gneam - Mahmoab13@ac.sce.ac.il
-
+Mohammed Sholdoum - mohamma14@ac.sce.ac.il
+Islam Mhareeq - islammh@ac.sce.ac.il
+Yusef AlSayed - yoseyosey@ac.sce.ac.il
 
 
 Acknowledgements
