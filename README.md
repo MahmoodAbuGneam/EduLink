@@ -4,12 +4,16 @@ EduLink is an educational platform designed to connect students, instructors, an
 
 ## Features
 
+- **Solves a big problem for every student around the globe**
 - **User Authentication**: Secure login and registration system for users.
 - **Profile Management**: Users can manage their profiles, including posting updates and managing personal information.
 - **Job Posts**: Employers can post job vacancies, and students or alumni can apply to these jobs.
 - **Workshops**: Instructors can create workshops, and students can register to participate.
 - **Search Functionality**: Robust search functionality to find users, job posts, and workshops.
 - **Report Problems**: Users can report problems directly through a modal in the navbar.
+- ** Work for students ** : Students can find jobs easily that fits their schedule of education.
+- ** Employers finding employee ** : Employers can find employees faster and easier and can help students by that . 
+  
 
 ## Technologies Used
 
@@ -30,27 +34,33 @@ EduLink is an educational platform designed to connect students, instructors, an
 ### Installation
 
 1. Clone the repository:
-   ```bash
+   ```
    git clone https://github.com/yourusername/edulink.git
    cd edulink
-
-   ```bash
+   ```
+   
+   ```
    npm install
-
+   ```
+   Change the mongoDB URL : 
+   ```
    DB_URI=mongodb+srv://yourMongoDBUriHere
    JWT_SECRET=yourSecretKey
-
-   To Start : 
+   ```
+   
+   To Start the server : 
+   ```
    npm start
-
+   ```
 
 After starting the server, you can access the application by navigating to http://localhost:3000 in your web browser.
 
 Running Tests
-   ```bash
       To run tests, run the following command:
+   ```
       npm test
-```
+   ```
+
 Contributing
 Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
 
