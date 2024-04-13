@@ -1,0 +1,62 @@
+{
+  "name": "studentserviceapplication",
+  "version": "1.0.0",
+  "description": "College Project",
+  "main": "server.js",
+  "dependencies": {
+    "@types/dotenv": "^8.2.0",
+    "connect-mongo": "^5.1.0",
+    "dotenv": "^8.6.0",
+    "ejs": "^3.1.9",
+    "express": "^4.17.1",
+    "express-session": "^1.18.0",
+    "googleapis": "^133.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "method-override": "^3.0.0",
+    "mongoose": "^5.13.22",
+    "mongosh": "^2.2.3",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.9.9",
+    "socket.io": "^4.7.4",
+    "sweetalert2": "^11.6.13"
+  },
+  "scripts": {
+    "test": "cross-env NODE_ENV=test jest",
+    "test:coverage": "cross-env NODE_ENV=test nyc npm run test",
+    "test:openHandles": "cross-env NODE_ENV=test jest --detectOpenHandles",
+    "start": "nodemon server.js"
+  },
+  "author": "MahmoodGneam",
+  "license": "ISC",
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "jest": "^29.7.0",
+    "mongodb-memory-server": "^9.1.8",
+    "nodemon": "^3.1.0",
+    "nyc": "^15.1.0",
+    "supertest": "^6.3.4"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/unit_tests/**/*.test.js"
+    ]
+  },
+  "nyc": {
+    "include": [
+      "../../server.js",
+      "../../routes/index.js",
+      "*.js",
+      "routes/**/*.js",
+      "models/**/*.js"
+    ],
+    "exclude": [
+      "node_modules/"
+    ],
+    "reporter": [
+      "lcov",
+      "text-summary"
+    ]
+  },
+  "keywords": []
+}
