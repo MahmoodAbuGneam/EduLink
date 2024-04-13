@@ -33,21 +33,24 @@ EduLink is an educational platform designed to connect students, instructors, an
    ```bash
    git clone https://github.com/yourusername/edulink.git
    cd edulink
-npm install
 
-DB_URI=mongodb+srv://yourMongoDBUriHere
-JWT_SECRET=yourSecretKey
+   ```bash
+   npm install
 
-npm start
+   DB_URI=mongodb+srv://yourMongoDBUriHere
+   JWT_SECRET=yourSecretKey
+
+   To Start : 
+   npm start
 
 
 After starting the server, you can access the application by navigating to http://localhost:3000 in your web browser.
 
 Running Tests
-To run tests, run the following command:
-npm test
-
-
+   ```bash
+      To run tests, run the following command:
+      npm test
+```
 Contributing
 Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
 
