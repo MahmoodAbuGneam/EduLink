@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+
+<%- include('navbar') %>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Website Home</title>
+    <link rel="stylesheet" href="/css/home.css">
+</head>
+<body>
+    <header class="hero">
+        <h1>Welcome to EduLink: Empowering Student Success</h1>
+        <p>At EduLink, we're committed to enriching the academic and financial journey of students. <br>
+            Whether you're seeking to advance your knowledge through specialized workshops or looking for part-time job opportunities tailored to your academic schedule
+            <br>our platform bridges the gap between students, instructors, and employers. Dive into a world where academic growth and financial stability coexist, tailored just for you.</p>
+        <a href="#bottom" class="cta">Explore</a>
+    </header>
+
+
+
+
+
+    <section class="features-section">
+    <h2>Key Features of EduLink</h2>
+    <div class="features-container">
+        <!-- Feature 1 -->
+        <div class="feature-item">
+            <img src="/css/pics/feature-student-support.svg" alt="Student Support">
+            <h3>Student Support</h3>
+            <p>Access tailored job opportunities and workshops designed to boost both your academic and financial wellbeing.</p>
+        </div>
+        
+        <!-- Feature 2 -->
+        <div class="feature-item">
+            <img src="/css/pics/feature-employer-connection.svg" alt="Employer Connection">
+            <h3>Employer Connection</h3>
+            <p>Seamlessly post job offers and find talented students ready to bring fresh ideas and skills to your workforce.</p>
+        </div>
+        
+        <!-- Feature 3 -->
+        <div class="feature-item">
+            <img src="/css/pics/feature-instructor-workshops.svg" alt="Instructor Workshops">
+            <h3>Instructor Workshops</h3>
+            <p>Offer your expertise through workshops, helping students tackle academic challenges and prepare for their careers.</p>
+        </div>
+        
+        <!-- Add more features as needed -->
+    </div>
+</section>
+
+
+
+
+
+
+    <section class="testimonials-section">
+        <h2>What People Say About EduLink</h2>
+        <div class="testimonials-container">
+            <% testimonials.forEach(testimonial => { %>
+                <div class="testimonial">
+                    <blockquote class="testimonial-quote">" <%= testimonial.quote %> "</blockquote>
+                    <div class="testimonial-author">
+                        <strong><%= testimonial.name %></strong>, <%= testimonial.role %>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </section>
+
+
+
+    <!-- meet the team  -->
+
+
+    <section class="team-section">
+        <h2>Meet Our Team</h2>
+        <div class="team-grid">
+            <!-- Team Member 1 -->
+            <div class="team-member">
+                <img src="/css/pics/mahmood.jpeg" alt="Founder & CEO" class="team-photo">
+                <h3>Mahmood Gneam</h3>
+                <p class="role">Founder & CEO</p>
+                <p class="bio">Driving vision and strategy with passion and innovation.</p>
+                <br>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/mahmood-gneam-132118249/" class="social-link">LinkedIn</a>
+
+                </div>
+            </div>
+
+             <!-- Team Member 2 -->
+            <div class="team-member">
+                <img src="/css/pics/yusef.jpeg" alt="Backend Developer" class="team-photo">
+                <h3>Yusif Jibrel</h3>
+                <p class="role">Backend Developer</p>
+                <p class="bio">Crafting the backbone of our platform with expertise.</p>
+                <br>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/yussif-elsayed-951359254/" class="social-link">LinkedIn</a>
+
+                </div>
+            </div>
+
+             <!-- Team Member 3 -->
+            <div class="team-member">
+                <img src="/css/pics/mohammed.jpeg" alt="Frontend Developer" class="team-photo">
+                <h3>Mohammed Salem</h3>
+                <p class="role">Frontend Developer</p>
+                <p class="bio">Designing user experiences that are intuitive and engaging.</p>
+                <br>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/mohamed-abu-shouldom-61255a254/" class="social-link">LinkedIn</a>
+
+                </div>
+            </div>
+
+             <!-- Team Member 4 -->
+            <div class="team-member">
+                <img src="/css/pics/islam.jpeg" alt="Support Team" class="team-photo">
+                <h3>Islam Mhareq</h3>
+                <p class="role">Support Team Leader</p>
+                <p class="bio">Ensuring user satisfaction through timely and empathetic support.</p>
+                <br>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/islam-mhareeq-04aa51272/" class="social-link">LinkedIn</a>
+                </div>
+            </div>
+    
+        </div>
+    </section>
+    
+
+
+
+
+
+
+    <!-- Footer  rights reserved -->
+    <footer class="footer">
+        <p>&copy; 2024 EduLink. All rights reserved.</p>
+        <p>Mahmood Gneam</p>
+    </footer>
+</body>
+</html>

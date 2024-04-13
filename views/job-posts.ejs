@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('navbar') %>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/job-posts.css">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title class="job-posts-title">Job Posts</title>
+</head>
+<body>
+    
+
+
+    <div class="search-bar">
+        <form action="/job-posts" method="GET">
+            <input type="text" name="search" placeholder="Search jobs" value="<%= search || '' %>">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    
+    <% if (user.role === "employer" || user.isAdmin === true) { %>
+        <h1 class="job-posts-title" >Job Posts</h1>
+    <div class="form-container">
+    
+        <h2>Create New Job Post</h2>
+        <form id="jobPostForm" action="/job-posts" method="POST">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" required><br>
+            <br>
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" required></textarea><br>
+            <br>
+            <label for="requirements">Requirements:</label>
+            <textarea id="requirements" name="requirements" required></textarea><br>
+            <br>
+            <label for="company">Company:</label>
+            <input type="text" id="company" name="company" required><br>
+            <br>
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" required><br>
+            <br>
+            <label for="applicationLink">Application Link:</label>
+            <input type="url" id="applicationLink" name="applicationLink"><br>
+            <br>
+            <button type="submit">Post Job</button>
+
+            
+        </form>
+    
+  </div>
+
+  
+  <% } %>
+  <div id="jobPostsList">
+    <h2 class="job-posts-title">Available Job Posts</h2>
+    <% jobPosts.forEach(function(jobPost) { %>
+    <div class="job-post">
+        <p></p>
+        <h3><%= jobPost.title %></h3>
+        <p><%= jobPost.description %></p>
+        <p class="requirements">Requirements: <%= jobPost.requirements %></p>
+        <p>Company: <%= jobPost.company %> - Location: <%= jobPost.location %></p>
+        
+        
+        <div class="test_div">
+        <% if (jobPost.applicationLink) { %>
+        <a  class="apply-link" href="<%= jobPost.applicationLink %>">Apply here</a>
+        <% } %>
+        <% console.log('User:', user); %>
+        <% console.log('Posted By:', jobPost.postedBy); %>
+        <% if (user && user._id.toString() === jobPost.postedBy._id.toString()) { %>
+            <!-- Edit button -->
+        <button class="edit-job-btn" data-postId="<%= jobPost._id %>" data-postTitle="<%= jobPost.title %>"
+            data-postDescription="<%= jobPost.description %>" data-postRequirements="<%= jobPost.requirements %>"
+            data-postCompany="<%= jobPost.company %>" data-postLocation="<%= jobPost.location %>"
+            data-postApplicationLink="<%= jobPost.applicationLink %>">
+            Edit
+        </button>
+        <br>
+        <!-- Delete form -->
+        <form action="/job-posts/<%= jobPost._id %>?_method=DELETE" method="POST">
+            <button type="submit" class="delete-btn">
+                <span class="text">Delete</span>
+                <span class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"></path></svg>
+                </span>
+            </button>
+        </form>
+
+        <a href="/job-posts/<%= jobPost._id %>/applicants" data-job-id="<%= jobPost._id %>" class="view-applicants-btn">View Applicants</a>
+        <% } %>
+        <button class="apply-btn" data-job-id="<%= jobPost._id %>">Apply</button>
+    </div>
+    </div>
+    <% }); %>
+</div>
+
+      
+
+
+
+
+      <!-- Modal  for editing a post -->
+      <div id="jobPostEdit-modal" class="jobPostEdit-modal">
+        <div class="jobPostEdit-modal-content">
+            <span class="jobPostEdit-close">&times;</span>
+            <h2>Edit Job Post</h2>
+            <form id="jobPostEdit-form" action="/edit-job-post" method="POST">
+                <!-- Hidden field for the job post ID -->
+                <input type="hidden" id="jobPostEdit-id" name="id">
+                <div class="jobPostEdit-form-group">
+                    <label for="jobPostEdit-title">Title</label>
+                    <input type="text" id="jobPostEdit-title" name="title" required>
+                </div>
+                <div class="jobPostEdit-form-group">
+                    <label for="jobPostEdit-description">Description</label>
+                    <textarea id="jobPostEdit-description" name="description" required></textarea>
+                </div>
+                <div class="jobPostEdit-form-group">
+                    <label for="jobPostEdit-requirements">Requirements</label>
+                    <textarea id="jobPostEdit-requirements" name="requirements" required></textarea>
+                </div>
+                <div class="jobPostEdit-form-group">
+                    <label for="jobPostEdit-company">Company</label>
+                    <input type="text" id="jobPostEdit-company" name="company" required>
+                </div>
+                <div class="jobPostEdit-form-group">
+                    <label for="jobPostEdit-location">Location</label>
+                    <input type="text" id="jobPostEdit-location" name="location" required>
+                </div>
+                <div class="jobPostEdit-form-group">
+                    <label for="jobPostEdit-applicationLink">Application Link</label>
+                    <input type="url" id="jobPostEdit-applicationLink" name="applicationLink">
+                </div>
+                
+                <button type="submit" class="jobPostEdit-submit-btn">Update Job Post</button>
+            </form>
+        </div>
+    </div>
+
+
+
+
+<!-- Modal for applying  to a job posting -->
+<div class="job-application-modal" style="display:none;">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <form id="jobApplicationForm">
+                <input type="hidden" id="hiddenJobId" name="jobPostId">
+                <input type="text" name="fullName" placeholder="Full Name" required />
+                <input type="email" name="email" placeholder="Email Address" required />
+                <input type="tel" name="phoneNumber" placeholder="Phone Number" required />
+                <select name="isStudying" required>
+                    <option value="">Are you currently studying?</option>
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                </select>
+                <input type="number" name="yearsOfExperience" placeholder="Years of Experience" required />
+                <input type="text" name="yourCity" placeholder="Your City" required />
+                <button type="submit">Apply</button>
+            </form>
+        </div>
+</div>
+
+<script>
+    document.querySelectorAll('.view-applicants-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const jobPostId = this.getAttribute('data-job-id'); // Read the job post ID from data attribute
+            window.location.href = `/job-posts/${jobPostId}/applicants`; // Navigate to the details page
+        });
+    });
+</script>
+
+
+<!-- The modal of editing the post  -->
+
+    <script>
+
+document.addEventListener('DOMContentLoaded', function() {
+    var modal = document.getElementById('jobPostEdit-modal');
+    var form = document.getElementById('jobPostEdit-form');
+    
+    // Event listeners for edit buttons
+    document.querySelectorAll('.edit-job-btn').forEach(item => {
+        item.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default link action
+            var postId = this.getAttribute('data-postId');
+            var postTitle = this.getAttribute('data-postTitle');
+            var postDescription = this.getAttribute('data-postDescription');
+            var postRequirements = this.getAttribute('data-postRequirements');
+            var postCompany = this.getAttribute('data-postCompany');
+            var postLocation = this.getAttribute('data-postLocation');
+            var postApplicationLink = this.getAttribute('data-postApplicationLink');
+
+
+        document.getElementById('jobPostEdit-title').value = postTitle;
+        document.getElementById('jobPostEdit-description').value = postDescription;
+        document.getElementById('jobPostEdit-requirements').value = postRequirements;
+        document.getElementById('jobPostEdit-company').value = postCompany;
+        document.getElementById('jobPostEdit-location').value = postLocation;
+        document.getElementById('jobPostEdit-applicationLink').value = postApplicationLink;
+
+
+            console.log("Opening modal for post ID:", postId);
+            modal.style.display = "block";
+            form.action = "/edit-job-post/" + postId; // Set the form action dynamically
+        });
+    });
+
+    // Close modal event listener
+    var span = document.getElementsByClassName("jobPostEdit-close")[0];
+    span.addEventListener('click', function() {
+        modal.style.display = "none";
+    });
+
+    // Close modal if user clicks outside of it
+    window.addEventListener('click', function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    });
+});
+    </script>
+
+
+
+
+<!-- JS for the edit button -->
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Target edit buttons for job posts specifically
+    document.querySelectorAll('.edit-job-btn').forEach(item => {
+        item.onclick = function() {
+            // Prevent opening the wrong modal
+            var editModal = document.getElementById('jobPostEdit-modal');
+
+            // Open the job post edit modal specifically
+            editModal.style.display = "block";
+
+            // Populate the edit form as needed
+            // Example for setting the job post ID
+            var postId = this.getAttribute('data-postId');
+            document.getElementById('jobPostEdit-id').value = postId;
+
+            // Stop the event here to prevent triggering other modals
+            return false;
+        }
+    });
+
+    // Close functionality for the edit modal, adjust as needed
+    var span = document.getElementsByClassName("jobPostEdit-close")[0];
+    span.onclick = function() {
+        var editModal = document.getElementById('jobPostEdit-modal');
+        editModal.style.display = "none";
+    }
+    
+    // Close the modal if the user clicks outside of it
+    window.onclick = function(event) {
+        var editModal = document.getElementById('jobPostEdit-modal');
+        if (event.target == editModal) {
+            editModal.style.display = "none";
+        }
+    }
+});
+</script>
+
+
+
+
+<!-- Post new job post  -->
+<script>
+        document.getElementById('jobPostForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent the default form submission action.
+        
+            // Gather the form data.
+            const formData = new FormData(this);
+            const jsonData = {};
+            formData.forEach((value, key) => { jsonData[key] = value; });
+        
+            // Send the data using Fetch API.
+            fetch('/job-posts', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(jsonData),
+            })
+            .then(response => response.json())
+            .then(data => {
+
+                currentUserId =  '<%= user._id %>';
+                console.log("Job posted successfully", data);
+
+                const jobPostsList = document.querySelector('#jobPostsList'); // Ensure you have a container with this ID in your HTML.
+                const newPostHtml = `
+                    <div class="job-post" data-id="${data._id}" >
+                        <p>Posted by: ${data.username}</p>
+                        <h3>${data.title}</h3>
+                        <p>${data.description}</p>
+                        <p>Requirements: ${data.requirements}</p>
+                        <p>Company: ${data.company} - Location: ${data.location}</p>
+                        ${data.applicationLink ? `<a href="${data.applicationLink}">Apply here</a>` : ''}
+                        ${(currentUserId === data.postedBy.toString() || user.isAdmin) ? `<button class="delete-btn">Delete</button>` : ''}
+                    </div>
+                `;
+                jobPostsList.insertAdjacentHTML('beforeend', newPostHtml);
+
+                this.reset();
+                window.location.reload();
+            })
+            .catch(error => {
+                console.error("Error posting job:", error);
+            });
+        });
+</script>
+
+
+
+
+<!-- Delete job post script -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('form').forEach(form => {
+        // Only attempt to add the listener if the delete button is found
+        const deleteBtn = form.querySelector('.delete-btn');
+        if (deleteBtn) {
+            deleteBtn.addEventListener('click', function(event) {
+                event.preventDefault();
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        }
+    });
+});
+    </script>
+
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Modal elements
+        var modal = document.querySelector(".job-application-modal");
+        var closeBtn = document.querySelector(".modal-content .close");
+    
+        // Display the apply modal and set jobPostId
+        document.querySelectorAll(".apply-btn").forEach(btn => {
+            btn.addEventListener('click', function() {
+                var jobPostId = this.getAttribute('data-job-id'); // Use getAttribute to fetch data-job-id
+                document.getElementById('hiddenJobId').value = jobPostId;  
+                modal.style.display = "block";
+            });
+        });
+    
+        // Close modal actions
+        closeBtn.onclick = function() { modal.style.display = "none"; }
+        window.onclick = function(event) { 
+            if (event.target == modal) { modal.style.display = "none"; }
+        }
+    
+        // Handle form submission
+        document.getElementById("jobApplicationForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            
+            // Prepare the data from the form, including the corrected jobPostId
+            var formData = new FormData(this);
+            var data = {
+                jobPostId: formData.get('jobPostId'), // Ensure this matches the input's name
+                fullName: formData.get('fullName'),
+                email: formData.get('email'),
+                phoneNumber: formData.get('phoneNumber'),
+                isStudying: formData.get('isStudying'),
+                yearsOfExperience: formData.get('yearsOfExperience'),
+                yourCity: formData.get('yourCity')
+            };
+            
+            // Fetch call to apply API
+            fetch('/api/job-posts/apply', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Server error or response not OK');
+                }
+                return response.json();
+            })
+            .then(result => {
+                Swal.fire('Success', 'Application submitted successfully', 'success');
+                modal.style.display = "none";
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire('Error', 'Failed to submit application', 'error');
+            });
+        });
+    });
+    </script>
+    
+
+
+
+</body>
+</html>

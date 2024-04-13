@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('navbar') %>
+    <link rel="stylesheet" href="/css/jobpost-details.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Post Details</title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Job Post Details</h1>
+        </header>
+
+        <div id="jobDetails" class="job-details">
+            <p>Loading job details...</p>
+        </div>
+    </div>
+
+    <script src="/css/js/JobPosts-Details.js"></script> 
+    <script>
+        fetchJobPostDetails('<%= jobPostId %>');
+    </script>
+</body>
+</html>

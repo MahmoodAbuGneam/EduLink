@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Job Post</title>
+    <link rel="stylesheet" href="/css/edit-job-post-style.css"> <!-- Update the path as needed -->
+</head>
+<body>
+    <div class="edit-job-post-container">
+        <h2 class="edit-job-post-heading">Edit Job Post</h2>
+        <form action="/edit-job-post/<%= jobPost._id %>" method="POST" class="edit-job-post-form">
+            <div class="form-field">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" id="title" name="title" class="form-input" value="<%= jobPost.title %>" required>
+            </div>
+
+            <div class="form-field">
+                <label for="description" class="form-label">Description</label>
+                <textarea id="description" name="description" class="form-textarea" required><%= jobPost.description %></textarea>
+            </div>
+
+            <div class="form-field">
+                <label for="requirements" class="form-label">Requirements</label>
+                <textarea id="requirements" name="requirements" class="form-textarea" required><%= jobPost.requirements %></textarea>
+            </div>
+
+                        <div class="form-field">
+                <label for="company" class="form-label">Company</label>
+                <input type="text" id="company" name="company" class="form-input" value="<%= jobPost.company %>" required>
+            </div>
+
+             <div class="form-field">
+                <label for="location" class="form-label">Location</label>
+                <input type="text" id="location" name="location" class="form-input" value="<%= jobPost.location %>" required>
+            </div>
+
+             <div class="form-field">
+                <label for="applicationLink" class="form-label">Application Link</label>
+                <input type="url" id="applicationLink" name="applicationLink" class="form-input" value="<%= jobPost.applicationLink %>" required>
+            </div>
+            
+
+            <button type="submit" class="form-submit-btn">Update Job Post</button>
+        </form>
+    </div>
+</body>
+</html>
