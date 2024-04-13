@@ -1,0 +1,112 @@
+.edit-job-post-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.edit-job-post-heading {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.form-field {
+    margin-bottom: 15px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+.form-input, .form-textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box; /* Makes sure the padding doesn't increase the total width */
+}
+
+.form-textarea {
+    height: 100px;
+    resize: vertical; /* Allows vertical resizing */
+}
+
+.form-submit-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.form-submit-btn:hover {
+    background-color: #0056b3;
+}
+
+
+
+
+.jobPostEdit-modal {
+    display: none;
+    position: fixed;
+    z-index: 2; /* Adjust z-index as necessary to be above other elements */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.jobPostEdit-modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%; /* Adjust width as necessary */
+}
+
+.jobPostEdit-close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.jobPostEdit-close:hover,
+.jobPostEdit-close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.jobPostEdit-form-group {
+    margin-bottom: 15px;
+}
+
+.jobPostEdit-submit-btn {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+.jobPostEdit-submit-btn:hover {
+    background-color: #45a049;
+}
+
+
+
