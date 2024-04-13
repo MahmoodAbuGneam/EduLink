@@ -11,8 +11,8 @@ EduLink is an educational platform designed to connect students, instructors, an
 - **Workshops**: Instructors can create workshops, and students can register to participate.
 - **Search Functionality**: Robust search functionality to find users, job posts, and workshops.
 - **Report Problems**: Users can report problems directly through a modal in the navbar.
-- ** Work for students ** : Students can find jobs easily that fits their schedule of education.
-- ** Employers finding employee ** : Employers can find employees faster and easier and can help students by that . 
+- **Work for students** : Students can find jobs easily that fits their schedule of education.
+- **Employers finding employee** : Employers can find employees faster and easier and can help students by that . 
   
 
 ## Technologies Used
