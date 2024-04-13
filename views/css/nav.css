@@ -1,0 +1,368 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+p {
+  font-size: 16px !important;
+}
+
+#navbar_header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px 10%;
+  background-color: #24252a;
+  height: 80px;
+}
+
+.logo {
+  margin-right: auto;
+  width: 70px; /* Increase width for better visibility */
+  height: 70px; /* Increase height accordingly */
+  object-fit: contain; /* This ensures the logo scales correctly within the dimensions */
+}
+
+.nav__links {
+  list-style: none;
+  display: flex;
+}
+
+.nav__links a,
+.nav-cta,
+.overlay__content a,
+#logout_nav { /* Added #logout_nav to the selector */
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+  color: #edf0f1;
+  text-decoration: none;
+  background: none; /* Remove any default background */
+  border: none; /* Remove any default border */
+  padding: 0; /* Remove any default padding */
+  cursor: pointer; /* Optional: if you want to make sure it has the pointer cursor like links */
+}
+
+.nav__links a {
+  flex: 1; /* This ensures the anchor tags can expand within the flex container */
+  text-align: center; /* Centers the text horizontally */
+}
+
+.nav__links li {
+  display: flex;
+  align-items: center;
+  padding: 0px 20px;
+}
+
+.nav__links li a {
+  transition: all 0.3s ease 0s;
+}
+
+.nav__links li a:hover {
+  color: #0088a9;
+}
+
+.nav-cta {
+  margin-left: 20px !important;
+  padding: 9px 25px !important;
+  background-color: rgb(110, 19, 214);
+  border: none ;
+  border-radius: 50px !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease 0s;
+}
+
+.nav-cta:hover {
+  background-color: rgba(0, 136, 169, 0.8);
+}
+
+/* Mobile Nav */
+
+
+.overlay {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  background-color: #24252a;
+  overflow-x: hidden;
+  transition: all 0.5s ease 0s;
+}
+
+.overlay--active {
+  width: 15%;
+}
+
+.overlay__content {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay a {
+  padding: 15px;
+  font-size: 31px;
+  display: block;
+  transition: all 0.3s ease 0s;
+}
+
+.overlay a:hover,
+.overlay a:focus {
+  color: #0088a9;
+}
+.overlay .close {
+  position: absolute;
+  top: 20px;
+  right: 45px;
+  font-size: 60px;
+  color: #edf0f1;
+  cursor: pointer;
+}
+
+@media screen and (max-height: 450px) {
+  .overlay a {
+    font-size: 20px ;
+  }
+  .overlay .close {
+    font-size: 40px;
+    top: 15px;
+    right: 35px;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .nav__links,
+  .nav-cta {
+    margin-left: 20px   !important;
+    padding: 9px 25px !important;
+    background-color: rgb(110, 19, 214) !important;
+    border: none  !important;
+    border-radius: 50px !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease 0s  !important;
+  }
+  .nav-menu {
+    display: initial !important;
+  }
+}
+
+
+
+
+
+/* The Modal (background) */
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* Adjusted for centering */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px; /* Controls the width */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px; /* Rounded corners */
+}
+
+/* The Close Button */
+.close-button {
+  color: #aaa;
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+
+
+
+
+/* MODAL STYLES */
+.navbar__modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4); /* Dimmed background */
+}
+
+/* Modal Content */
+.navbar__modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: 10% auto; /* Increase top margin for better vertical positioning */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Adjust width */
+  max-width: 500px; /* Prevents the modal from being too wide */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  border-radius: 10px; /* Rounded corners for modern look */
+  animation: modalFadeIn 0.5s; /* Smooth fade-in effect */
+}
+
+/* The Close Button */
+.navbar__close {
+  color: #aaaaaa;
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.navbar__close:hover,
+.navbar__close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Fade-in animation */
+@keyframes modalFadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+/* Input fields style */
+.navbar__modal input[type=email],
+.navbar__modal textarea {
+  width: calc(100% - 20px); /* Full width minus padding */
+  padding: 10px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px; /* Optional: for rounded corners */
+  box-sizing: border-box; /* So that width includes padding */
+}
+
+/* Submit button style */
+.navbar__modal button[type=submit] {
+  width: 100%;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.navbar__modal button[type=submit]:hover {
+  background-color: #45a049;
+}
+
+
+#logout_nav {
+  background-color: transparent; /* Ensures the button has no background */
+  border: none; /* Ensures the button has no border */
+  color: #edf0f1; /* Text color */
+  cursor: pointer; /* Changes cursor to pointer on hover */
+  display: inline-block; /* Aligns with the form's display */
+  font-size: inherit; /* Inherits the font size from the parent */
+  margin: 0; /* Removes default margin */
+  padding: 0 0px; /* Adds horizontal padding */
+  vertical-align: middle; /* Aligns vertically with other nav items */
+}
+
+.logoutForm {
+  display: inline; /* Ensures the form does not break the flow */
+}
+
+
+
+/*search bar*/
+
+.navbar-input-wrapper {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  position: relative;
+}
+
+.navbar-input {
+  text-align: center;
+  border-style: none;
+  height: 50px;
+  width: 50px;
+  padding: 10px;
+  outline: none;
+  border-radius: 50%;
+  transition: .5s ease-in-out;
+  background-color: #7e4fd4;
+  box-shadow: 0px 0px 3px #f3f3f3;
+  padding-right: 40px;
+  color: #fff;
+}
+
+.navbar-input::placeholder,
+.navbar-input {
+  text-align: center;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-size: 17px;
+}
+
+.navbar-input::placeholder {
+  text-align: center;
+  color: #8f8f8f;
+}
+
+.navbar-icon {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right: 0px;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+  outline: none;
+  border-style: none;
+  border-radius: 50%;
+  pointer-events: painted;
+  background-color: transparent;
+  transition: .2s linear;
+}
+
+.navbar-icon:focus ~ .navbar-input,
+.navbar-input:focus {
+  text-align: center;
+  box-shadow: none;
+  width: 250px;
+  border-radius: 0px;
+  background-color: transparent;
+  border-bottom: 3px solid #7e4fd4;
+  transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
+}

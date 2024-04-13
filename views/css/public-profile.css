@@ -1,0 +1,91 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #e9ecef;
+    color: #212529;
+    margin: 0;
+    padding: 0px;
+}
+
+h1, h2 {
+    color: #495057;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.user-profile, .container {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    max-width: 750px;
+    margin: 20px auto;
+    text-align: center;
+    border: 1px solid #dee2e6;
+}
+
+p, .post-content p, .job-post p, .workshop p {
+    margin: 15px 0;
+    color: #343a40;
+    line-height: 1.5;
+}
+
+/* Styling for posts, job posts, and workshops */
+.post, .job-post, .workshop {
+    background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+    margin-bottom: 30px;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    border-left: 4px solid #6c757d; /* Adjusted for a more neutral accent */
+    text-align: left;
+}
+
+.post:hover, .job-post:hover, .workshop:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Adjusted header styling for consistency */
+.post-header, .job-posts-title, .workshops-title {
+    font-size: 18px;
+    color: #007bff; /* Blue color for titles */
+    margin-bottom: 15px;
+}
+
+/* Button Styling */
+.delete-btn, button[type="submit"] {
+    background-color: #dc3545;
+    color: #ffffff;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 14px;
+    margin-top: 10px; /* Added margin-top for spacing */
+}
+
+.delete-btn:hover, button[type="submit"]:hover {
+    background-color: #c82333;
+}
+
+/* Links within Job Posts and Workshops */
+.job-post a, .workshop a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.job-post a:hover, .workshop a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive Design Adjustments */
+@media (max-width: 768px) {
+    .user-profile, .post, .job-post, .workshop {
+        max-width: 100%;
+        margin: 10px 0;
+        padding: 15px;
+    }
+}
