@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('navbar') %>
+    <link rel="stylesheet" href="/css/workshop-details.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workshop Details</title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Workshop Details</h1>
+        </header>
+
+        <div id="workshopDetails" class="workshop-details">
+            <p>Loading workshop details...</p>
+        </div>
+    </div>
+
+    <script src="/css/js/workshops.js"></script> 
+    <script>
+        fetchWorkshopDetails('<%= workshopId %>');
+    </script>
+</body>
+</html>

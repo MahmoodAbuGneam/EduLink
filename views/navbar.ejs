@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Navbar</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/css/nav.css">
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:500&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <header id="navbar_header">
+            <a class="logo" href="/"><img src="/css/pics/logo.svg" alt="logo"></a>
+            <nav>
+                <ul class="nav__links">
+
+
+                    <li class="navbar__item navbar__search-custom">
+                        <div class="navbar-input-wrapper">
+                          <button class="navbar-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="25px" width="25px">
+                              <path stroke-linejoin="round" stroke-linecap="round" stroke-width="1.5" stroke="#fff" d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"></path>
+                              <path stroke-linejoin="round" stroke-linecap="round" stroke-width="1.5" stroke="#fff" d="M22 22L20 20"></path>
+                            </svg>
+                          </button>
+                          <input placeholder="search.." class="navbar-input" name="text" type="text" onkeypress="searchUser(event)">
+                        </div>
+                      </li>
+
+                    <li><a href="/">Home</a></li>
+                    <% if (isLoggedIn) { %>
+                        <li><form class="logoutForm" action="/logout" method="post" style="display: inline;">
+                            <button type="submit" id="logout_nav">Logout</button>
+                        </form></li>
+                    <% } else { %> 
+                        <li><a href="/login" class="navbar__link">Login</a></li>
+                    <% } %>
+                    <li><a id="navbar__reportBtn" class="navbar__report-btn">Report A Problem</a></li>
+                    
+                </ul>
+            </nav>
+            <p class="nav-menu nav-cta">Menu</p>
+
+        </header>
+
+
+        <div id="userNotFoundModal" class="modal">
+            <div class="modal-content">
+              <span class="close-button">&times;</span>
+              <p>User not found.</p>
+            </div>
+          </div>
+          
+        <div id="navbar__reportModal" class="navbar__modal">
+            <div class="navbar__modal-content">
+                <span class="navbar__close">&times;</span>
+                <form id="navbar__reportForm">
+                    <h2>Report a Problem</h2>
+                    <input type="email" name="email" placeholder="Your email" required>
+                    <textarea name="content" placeholder="Describe the issue..." required></textarea>
+                    <button type="submit">Submit Report</button>
+                </form>
+            </div>
+        </div>
+    
+        <!-- <script>
+            // Modal Script with updated IDs
+            var modal = document.getElementById('navbar__reportModal');
+            var btn = document.getElementById('navbar__reportBtn');
+            var span = document.getElementsByClassName('navbar__close')[0];
+    
+            btn.onclick = function() {
+                modal.style.display = 'block';
+            }
+    
+            span.onclick = function() {
+                modal.style.display = 'none';
+            }
+    
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            }
+    
+            document.getElementById('navbar__reportForm').onsubmit = function(e) {
+                e.preventDefault();
+                var reportContent = this.content.value;
+                var reportEmail = this.email.value;
+                fetch('/report-problem', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ content: reportContent, email: reportEmail }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    modal.style.display = 'none';
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+            };
+    
+    
+            
+    
+        </script> -->
+
+        <script>
+            // Modal control
+            var modal = document.getElementById('navbar__reportModal');
+            var btn = document.getElementById('navbar__reportBtn'); // Ensure this button exists in your HTML
+            var span = document.getElementsByClassName('navbar__close')[0];
+        
+            btn.onclick = function() {
+                modal.style.display = 'block';
+            }
+        
+            span.onclick = function() {
+                modal.style.display = 'none';
+            }
+        
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            }
+        
+            // Form submission with SweetAlert2 feedback
+            document.getElementById('navbar__reportForm').onsubmit = function(e) {
+                e.preventDefault();
+                var reportContent = this.content.value;
+                var reportEmail = this.email.value;
+        
+                fetch('/report-problem', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ content: reportContent, email: reportEmail }),
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok.');
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Success:', data);
+                    Swal.fire({
+                        title: 'Thank You!',
+                        text: 'Your report has been submitted successfully.',
+                        icon: 'success',
+                        confirmButtonText: 'Close'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            modal.style.display = 'none'; // Close the modal on successful submission
+                        }
+                    });
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    Swal.fire({
+                        title: 'Oops...',
+                        text: 'Something went wrong with your submission. Please try again later.',
+                        icon: 'error',
+                        confirmButtonText: 'Close'
+                    });
+                });
+            };
+        </script>
+
+        <!-- Side Menu Options  -->
+        <div id="mobile__menu" class="overlay">
+            <a class="close">&times;</a>
+            <div class="overlay__content">
+                <a href="/">Home</a>
+                <a href="/profile">Profile</a>
+                <a href="/main">Main Page</a>
+                <a href="/job-posts">Job Offers</a>
+                <a href="/workshops">Workshops</a>
+            </div>
+        </div>
+        <script type="text/javascript" src="/css/js/nav.js"></script> 
+    </body>
+</html>

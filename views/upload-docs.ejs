@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Documents</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <%- include('navbar') %>
+    <div class="container mt-5">
+        <h1>Upload Your Verification Documents</h1>
+        <form id="upload-docs-form" action="/submit-docs" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="document">Choose document(s) to upload (e.g., ID, certificate):</label>
+                <input type="file" id="document" name="document" multiple class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary">Upload Document</button>
+        </form>
+        <br>
+        <br>
+        <h2>Uploaded Documents</h2>
+        <ul id="uploadedDocs" class="list-unstyled">
+            <% documents.forEach(doc => { %>
+                <li class="mb-2">
+                    <%= doc.filename %> 
+                    <button class="btn btn-danger delete-doc-btn" data-id="<%= doc._id %>">Delete</button>
+                </li>
+            <% }); %>
+        </ul>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+$(document).ready(function() {
+    $('#upload-docs-form').submit(function(e) {
+        e.preventDefault(); // Stop form from submitting normally
+
+        let formData = new FormData(this);
+
+        Swal.fire({
+            title: 'Uploading...',
+            text: 'Please wait while your document is being uploaded.',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+
+                // Perform the AJAX request
+                $.ajax({
+                    url: '/submit-docs',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false, // Necessity for FormData
+                    processData: false, // Necessity for FormData
+                    success: function(data) {
+                        Swal.hideLoading();
+                        Swal.fire('Success', 'Your document has been successfully uploaded.', 'success')
+                            .then(() => {
+                                window.location.reload(); // Optionally reload the page or update the UI accordingly
+                            });
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.fire('Error', 'There was a problem with the upload. Please try again.', 'error');
+                    }
+                });
+            }
+        });
+    });
+});
+    </script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const deleteButtons = document.querySelectorAll('.delete-doc-btn');
+    
+        deleteButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                const docId = this.getAttribute('data-id');
+    
+                // SweetAlert2 confirmation dialog
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Proceed with deletion if confirmed
+                        deleteDocument(docId);
+                    }
+                });
+            });
+        });
+    
+        function deleteDocument(docId) {
+            fetch(`/delete-doc/${docId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                Swal.fire(
+                    'Deleted!',
+                    'Your document has been deleted.',
+                    'success'
+                ).then(() => {
+                    // Optionally reload the page or remove the document element from DOM
+                    window.location.reload();
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire(
+                    'Failed!',
+                    'There was a problem deleting your document. Please try again.',
+                    'error'
+                );
+            });
+        }
+    });
+    </script>
+    
+
+
+
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('navbar') %>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+    <link rel="stylesheet" href="/css/main-page.css"> <!-- Ensure the correct path -->
+
+</head>
+<body>
+
+
+
+    <form class="generic_form" action="/search-posts" method="GET">
+        <input class="MainP-Input" type="text" name="query" placeholder="Search posts..." required>
+        <button class="generic_btn" type="submit">Search</button>
+      </form>
+      
+
+    <form class="generic_form" action="/submit-post" method="POST" enctype="multipart/form-data">
+        <input class="MainP-Input" type="text" name="postContent" required placeholder="Write something...">
+        <input class="MainP-Input" type="file" name="postImage" accept="image/*">
+        <button class="generic_btn" type="submit">Post</button>
+    </form>
+
+    <!-- Container for posts -->
+    <div id="posts-container">
+        <% console.log("currentUser:", currentUser); %>
+        <% console.log("currentUser._id:", currentUser ? currentUser._id : 'currentUser is undefined'); %>
+        <% if (posts && posts.length > 0) { %>
+            <% posts.forEach(function(post) { %>
+                <% console.log("post:", post); %>
+    <% console.log("post.userId:", post.userId); %>
+                <div class="post">
+                    <div class="post-header">
+                        <img src="/css/pics/profile.png" alt="User Profile Picture" class="profile-pic">
+                        <div class="post-info">
+                            <h3><%= post.username%></h3>
+                            <span class="posted-on">Posted on <%= post.createdAt.toDateString() %></span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <p><%= post.content %></p> 
+                    </div>
+                    <% if (post.image) { %> 
+                        <div class="post-image">
+                            <img src="/post-image/<%= post.image %>" alt="Post Image"> <!-- Use the dedicated route to display the image -->
+                        </div>
+                    <% } %>
+                    <div class="post-actions">
+                        <% if (typeof currentUser !== 'undefined' && currentUser._id && post.userId && post.userId._id && (currentUser.isAdmin || post.userId._id.toString() === currentUser._id.toString())) { %>                            <form class="generic_form" action="/delete-post/<%= post._id %>" method="POST">
+                                <button class="generic_btn" type="submit">Delete</button>
+                            </form>
+                        <% } %>
+                    </div>
+                </div>
+            <% }); %>
+        <% } else { %>
+            <p>No posts to display.</p>
+        <% } %>
+    </div>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('navbar') %>
+    <meta charset="UTF-8">
+    <title><%= user.username %>'s Profile</title>
+    <link rel="stylesheet" href="/css/public-profile.css">
+</head>
+<body>
+    <div class="container">
+        <h1><%= user.username %>'s Profile</h1>
+        <p>Role: <%= user.role %></p>
+
+        <!-- Display Posts for All Users -->
+        <section id="posts-section">
+            <h2>Posts</h2>
+            <% if (posts && posts.length > 0) { %>
+                <% posts.forEach(function(post) { %>
+                    <div class="post">
+                        <h3><%= post.title %></h3>
+                        <p><%= post.content %></p>
+                        <!-- Additional Post details -->
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <p>No posts to display.</p>
+            <% } %>
+        </section>
+
+        <!-- Display Job Posts for Employers -->
+        <% if (user.role === 'employer' && jobPosts) { %>
+            <section id="job-posts-section">
+                <h2>Job Posts</h2>
+                <% jobPosts.forEach(function(jobPost) { %>
+                    <div class="job-post">
+                        <h3><%= jobPost.title %></h3>
+                        <p><%= jobPost.description %></p>
+                        <p>Requirements: <%= jobPost.requirements %></p>
+                        <p>Company: <%= jobPost.company %> - Location: <%= jobPost.location %></p>
+                        <% if (jobPost.applicationLink) { %>
+                            <a href="<%= jobPost.applicationLink %>">Apply here</a>
+                        <% } %>
+                    </div>
+                <% }); %>
+            </section>
+        <% } %>
+
+        <!-- Display Workshops for Instructors -->
+        <% if (user.role === 'instructor' && workshops) { %>
+            <section id="workshops-section">
+                <h2>Workshops</h2>
+                <% workshops.forEach(function(workshop) { %>
+                    <div class="workshop">
+                        <h3><%= workshop.title %></h3>
+                        <p><%= workshop.description %></p>
+                        <p>Instructor: <%= workshop.instructor %></p>
+                        <p>Date: <%= new Date(workshop.date).toLocaleDateString() %></p>
+                        <% if (workshop.registrationLink) { %>
+                            <a href="<%= workshop.registrationLink %>" target="_blank">Register Here</a>
+                        <% } %>
+                    </div>
+                <% }); %>
+            </section>
+        <% } %>
+    </div>
+</body>
+</html>

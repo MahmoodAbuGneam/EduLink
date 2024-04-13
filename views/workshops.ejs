@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+       <%- include('navbar') %>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workshops</title>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="/css/workshop.css">
+</head>
+<body class="workshop-body">
+
+    <div class="search-bar">
+        <form action="/workshops" method="GET">
+            <input type="text" name="search" placeholder="Search workshops" value="<%= search || '' %>">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    
+    <div class="container">
+        <h1>Upcoming Workshops</h1>
+        <div class="workshops-list">
+            <% workshops.forEach(workshop => { %>
+                <div class="workshop-card">
+                    <h2><%= workshop.title %></h2>
+                    <p><%= workshop.description %></p>
+                    <p><strong>Instructor:</strong> <%= workshop.instructor %></p>
+                    <p><strong>Date:</strong> <%= new Date(workshop.date).toLocaleDateString() %></p>
+                    <div class="workshop-card">
+                    <% if (workshop.registrationLink) { %>
+                        <a href="<%= workshop.registrationLink %>" target="_blank" class="btn">Workshop Link</a>
+                        <% } %>
+                        <div><button class="ws-modal-button" data-workshop-id="<%= workshop._id %>">Sign Up for Workshop</button></div>
+                        <div><button onclick="copyToClipboard()" class="share-btn">Share</button></div>
+
+                    <% if (_id.toString() === workshop.postedBy.toString()) { %>
+                        <a href="/workshop/<%= workshop._id %>/details" class="details-btn">View Details</a>
+                        <form action="/workshops/<%= workshop._id %>" method="POST">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="button" class="delete-btn" data-id="<%= workshop._id %>">Delete</button>
+
+                        </form>
+                    <% } %>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+
+
+
+
+
+        <script>
+        
+        
+        function copyToClipboard() {
+        navigator.clipboard.writeText(window.location.href).then(() => {
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Link copied to clipboard!',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }).catch(err => {
+            console.error('Failed to copy: ', err);
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Failed to copy the link. Please try again.'
+            });
+        });
+    }
+        
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const workshopsContainer = document.querySelector('.workshops-list'); // Adjusted to the correct class
+        
+            workshopsContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('delete-btn')) {
+                    // Prevent default form submission
+                    e.preventDefault();
+        
+                    const workshopId = e.target.getAttribute('data-id');
+                    const workshopCard = e.target.closest('.workshop-card'); // Adjusted to the correct class
+        
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Perform the fetch request inside the confirmation
+                            fetch(`/workshops/${workshopId}`, { 
+                                method: 'DELETE',
+                                headers: { 
+                                    // Ensure your server is setup to read JSON body
+                                    'Content-Type': 'application/json', 
+                                },
+                            })
+                            .then(response => {
+                                if (response.ok) {
+                                    workshopCard.remove(); // Remove the workshop card from the DOM
+                                    Swal.fire(
+                                        'Deleted!',
+                                        'Your workshop has been deleted.',
+                                        'success'
+                                    );
+                                } else {
+                                    throw new Error('Failed to delete workshop');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                Swal.fire(
+                                    'Error',
+                                    'Could not delete the workshop. Please try again.',
+                                    'error'
+                                );
+                            });
+                        }
+                    });
+                }
+            });
+        });
+        </script>
+        
+        <% if (isUserInstructor) { %>
+            <div class="workshop-form">
+                <h2>Post a New Workshop</h2>
+                <form action="/post-workshop" method="POST">
+                    <input type="text" name="title" placeholder="Title" required>
+                    <textarea name="description" placeholder="Description" required></textarea>
+                    <input type="text" name="instructor" placeholder="Instructor Name" required>
+                    <input type="date" name="date" placeholder="Date" required min="<%= new Date().toISOString().split('T')[0] %>">
+                    <input type="text" name="registrationLink" placeholder="Link (optional)">
+                    <br>
+                    <button type="submit">Post Workshop</button>
+                </form>
+            </div>
+        <% } %>
+    </div>
+
+    <!-- Modal for signing up for the workshops -->
+    <div class="ws-modal">
+        <div class="ws-modal-content">
+            <span class="ws-close">&times;</span>
+            <form id="ws-signupForm">
+                <input type="text" name="fullName" placeholder="Full Name" required />
+                <input type="tel" name="phoneNumber" placeholder="Phone Number" required />
+                <input type="email" name="email" placeholder="Email Address" required />
+                <input type="text" name="major" placeholder="Major in College" required />
+                <select name="yearInEducation" required>
+                    <option value="">Select Year in Education</option>
+                    <option value="1st Year">1st Year</option>
+                    <option value="2nd Year">2nd Year</option>
+                    <option value="3rd Year">3rd Year</option>
+                    <option value="4th Year">4th Year</option>
+                    <option value="Graduate">Graduate</option>
+                </select>
+                <input type="hidden" id="hiddenWorkshopId" name="workshopId">
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const wsModal = document.querySelector(".ws-modal");
+            const wsButtons = document.querySelectorAll(".ws-modal-button");
+            const wsSpan = document.querySelector(".ws-close");
+            wsButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const workshopId = this.getAttribute('data-workshop-id');
+                    document.querySelector("#ws-signupForm input[name='workshopId']").value = workshopId;
+                    wsModal.style.display = "block";
+                });
+            });
+
+            wsSpan.onclick = function() {
+                wsModal.style.display = "none";
+            }
+
+            window.onclick = function(event) {
+                if (event.target == wsModal) {
+                    wsModal.style.display = "none";
+                }
+            }
+
+            document.getElementById("ws-signupForm").addEventListener("submit", function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                const formObject = {};
+                formData.forEach((value, key) => { formObject[key] = value; });
+
+                fetch('/api/workshops/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', },
+                    body: JSON.stringify(formObject),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Signed Up!',
+                        text: 'You have successfully signed up for the workshop.',
+                    }).then(() => {
+                        wsModal.style.display = "none"; // Close the modal
+                        window.location.reload(); // Reload the page to reflect changes
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'An error occurred. Please try again.',
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
